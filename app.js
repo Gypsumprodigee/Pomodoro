@@ -1,55 +1,125 @@
-const start = document.getElementById("start");
-const stop = document.getElementById("stop");
-const reset = document.getElementById("reset");
-const timer = document.getElementById("timer");
+const circle = document.querySelector(".container");
 
-let timeLeft = 1500; // 25 minutes
-let interval;
+let isDragging = false;
+let offsetX, offsetY;
 
-const updateTimer = () => {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
+circle.addEventListener("mousedown", (e) => {
+    isDragging = true;
 
-    timer.innerHTML =
-        `${minutes.toString().padStart(2, "0")}:${seconds
-            .toString()
-            .padStart(2, "0")}`;
-};
+    offsetX = e.clientX - circle.offsetLeft;
+    offsetY = e.clientY - circle.offsetTop;
 
-const startTimer = () => {
-    if (interval) return; // prevent multiple timers
+    circle.style.cursor = "grabbing";
+});
 
-    interval = setInterval(() => {
-        timeLeft--;
-        updateTimer();
+document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
 
-        if (timeLeft === 0) {
-            clearInterval(interval);
-            interval = null;
+    circle.style.left = `${e.clientX - offsetX}px`;
+    circle.style.top = `${e.clientY - offsetY}px`;
 
-            alert("Quest Complete ⚔️");
+    circle.style.transform = "none";
+});
 
-            timeLeft = 1500;
-            updateTimer();
+document.addEventListener("mouseup", () => {
+    isDragging = false;
+    circle.style.cursor = "grab";
+});
+let minutes = 25;
+let seconds = 0;
+
+let timer;
+let isRunning = false;
+
+const minutesDisplay = document.getElementById("minutes");
+const secondsDisplay = document.getElementById("seconds");
+
+const startBtn = document.getElementById("start");
+const pauseBtn = document.getElementById("pause");
+const resetBtn = document.getElementById("reset");
+
+
+// Update Timer Display
+function updateDisplay() {
+    minutesDisplay.textContent = String(minutes).padStart(2, "0");
+    secondsDisplay.textContent = String(seconds).padStart(2, "0");
+}
+
+
+// Start Timer
+function startTimer() {
+    if (isRunning) return;
+
+    isRunning = true;
+
+    timer = setInterval(() => {
+
+        if (seconds === 0) {
+
+            if (minutes === 0) {
+                clearInterval(timer);
+                isRunning = false;
+                alert("Pomodoro Complete!");
+                return;
+            }
+
+            minutes--;
+            seconds = 59;
+
+        } else {
+            seconds--;
         }
+
+        updateDisplay();
+
     }, 1000);
-};
+}
 
-const stopTimer = () => {
-    clearInterval(interval);
-    interval = null;
-};
 
-const resetTimer = () => {
-    clearInterval(interval);
-    interval = null;
+// Pause Timer
+function pauseTimer() {
+    clearInterval(timer);
+    isRunning = false;
+}
 
-    timeLeft = 1500;
-    updateTimer();
-};
 
-start.addEventListener("click", startTimer);
-stop.addEventListener("click", stopTimer);
-reset.addEventListener("click", resetTimer);
+// Reset Timer
+function resetTimer() {
+    clearInterval(timer);
 
-updateTimer(); // initialize display
+    minutes = 25;
+    seconds = 0;
+
+    isRunning = false;
+
+    updateDisplay();
+}
+
+
+// Button Event Listeners
+startBtn.addEventListener("click", startTimer);
+pauseBtn.addEventListener("click", pauseTimer);
+resetBtn.addEventListener("click", resetTimer);
+
+
+// Initial Display
+updateDisplay();
+const musicBtn = document.getElementById("musicBtn");
+const bgMusic = document.getElementById("bgMusic");
+
+let isPlaying = false;
+
+musicBtn.addEventListener("click", () => {
+
+    if (!isPlaying) {
+        bgMusic.play();
+        musicBtn.innerHTML = "🔊";
+        isPlaying = true;
+    } 
+    else {
+        bgMusic.pause();
+        musicBtn.innerHTML = "🎵";
+        isPlaying = false;
+    }
+
+});

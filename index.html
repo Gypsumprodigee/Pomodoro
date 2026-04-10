@@ -1,25 +1,33 @@
 <!DOCTYPE html>
-<html lanf="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-    content="width-device-width,initial-scale=1.0">
-    <title>Pomodoro Timer</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <h1 class="'title">Pomodoro Timer</h1>
-
-        <hr>
-
-        <p class="timer" id="timer">25:00</p>
-        <div>
-            <button id="start">Start</button>
-            <button id="stop">Stop</button>
-            <button id="reset">Reset</button>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+        content="widt=device-width,initial-scale=1.0">
+        <title>Pomodoro Timer</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <video autoplay muted loop id="bg-video">
+        <source src="image_res/bg_v2.mp4" type="video/mp4">
+        </video>
+        <div class="overlay"></div>
+        
+        <audio id="bgMusic" loop>
+            <source src="music/bgmusic.mp3" type="audio/mp3">
+        </audio>
+        <div class="container">
+            <h1>Pomodoro Timer</h1>
+            <hr>
+            <div class="timer">
+                <span id="minutes">25</span>:<span id="seconds">00</span>
+            </div>
+            <div class="controls">
+                <button id="start">Start</button>
+                <button id="pause">Pause</button>
+                <button id="reset">Reset</button>
+                <div class="music-btn" id="musicBtn">🎵</div>
+            </div>
         </div>
-    </div>
-    <script src="app.js"></script>
-</body>
-</html>
+        <script src="app.js"></script>
+    </body>  
