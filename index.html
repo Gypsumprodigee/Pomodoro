@@ -1,33 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-        content="widt=device-width,initial-scale=1.0">
-        <title>Pomodoro Timer</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <video autoplay muted loop id="bg-video">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar Pomodoro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <video autoplay muted loop playsinline id="bg-video">
         <source src="image_res/bg_v2.mp4" type="video/mp4">
-        </video>
-        <div class="overlay"></div>
+    </video>
+    <audio id="bgMusic" loop src="music/bgmusic.mp3"></audio>
+    <audio id="notifySound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+   <div class="top-nav">
+        <div class="nav-logo">
+            PomoSakura 
+            <img src="https://api.iconify.design/twemoji:cherry-blossom.svg" alt="Sakura" class="sakura-icon">
+        </div>
         
-        <audio id="bgMusic" loop>
-            <source src="music/bgmusic.mp3" type="audio/mp3">
-        </audio>
-        <div class="container">
-            <h1>Pomodoro Timer</h1>
-            <hr>
-            <div class="timer">
-                <span id="minutes">25</span>:<span id="seconds">00</span>
-            </div>
-            <div class="controls">
-                <button id="start">Start</button>
-                <button id="pause">Pause</button>
-                <button id="reset">Reset</button>
-                <div class="music-btn" id="musicBtn">🎵</div>
+        <div class="nav-buttons">
+            <button id="taskBtn" title="Tasks">☑️</button>
+            <button id="statsBtn" title="Statistics">📊</button>
+            <button id="fullscreenBtn" title="Full Screen">⛶</button>
+        </div>
+    </div>
+    <div class="container theme-focus" id="timerContainer">
+        <div class="audio-widget">
+        <div class="music-btn" id="musicBtn">🎵</div>
+
+        <div class="audio-settings" id="audioSettings">
+            <select id="musicSelector" class="glass-select">
+                <option value="music/101.mp3">Lofi Beats</option>
+                <option value="music/102.mp3">Night Forest</option>
+                <option value="music/103.mp3">Ocean Waves</option>
+            </select>
+        <div class="slider-container">
+            <span>🔉</span>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
+            <span>🔊</span>
+        </div>
+    </div>
+</div>
+        <div class="mode-tabs">
+            <button id="tab-focus" class="tab active" onclick="switchMode('focus')">Focus</button>
+            <button id="tab-short" class="tab" onclick="switchMode('short')">Short Break</button>
+            <button id="tab-long" class="tab" onclick="switchMode('long')">Long Break</button>
+        </div>
+
+        <div class="session-tracker" id="sessionTracker">Sessions: 0/4</div>
+
+        <div class="timer">
+            <span id="minutes">25</span>:<span id="seconds">00</span>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar">
+                <span class="runner">🦊</span>
             </div>
         </div>
-        <script src="app.js"></script>
-    </body>  
+        
+        <div class="controls">
+            <button id="start">Start</button>
+            <button id="pause">Pause</button>
+            <button id="reset">Reset</button>
+        </div>
+    </div>
+    <div class="modal-overlay" id="modalOverlay">
+    
+        <div class="modal" id="taskModal">
+            <button class="close-btn" onclick="closeModals()">✖</button>
+            <h2>📝 Tasks</h2>
+            <div class="task-input-area">
+                <input type="text" id="taskInput" placeholder="What needs to be done?">
+                <button onclick="addTask()">Add</button>
+            </div>
+            <ul class="task-list" id="taskList">
+                </ul>
+        </div>
+
+        <div class="modal" id="statsModal">
+            <button class="close-btn" onclick="closeModals()">✖</button>
+            <h2>📊 Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="totalSessionsStat">0</div>
+                    <div class="stat-label">Focus Sessions</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalMinutesStat">0</div>
+                    <div class="stat-label">Focus Minutes</div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
